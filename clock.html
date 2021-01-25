@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>TIEM.</title>
+        <style>
+            body {
+                background-color: black;
+                font-weight: bold;
+                color: #181818;
+                overflow: hidden;
+            }
+            span.preamble,
+            span.epilog,
+            span.active {
+                color: cyan;
+                text-shadow: 0px 0px 8px aliceblue;
+            }
+            .clock {
+                display: none;
+            }
+            .clock.visible {
+                display: block;
+            }
+            .buttoncontainer {
+                position: absolute;
+                display: block;
+                right: 0px;
+                bottom: 0px;
+            }
+	    .codeblock {
+                position: absolute;
+                display: block;
+                left: 0px;
+                bottom: 0px;
+            }
+            code {
+                color: #aaa;
+		display: block;
+            }
+	 
+            button {
+                background-color: inherit;
+                border: none;
+                cursor: pointer;
+                font-size: 4vh;
+            }
+        </style>
+        <style id="fontsize">
+        </style>
+        <script type="text/javascript">
+            function tiem() {
+                const lang = document.location.hash.substr(1) || 'en'
+                toggleclass(
+                    document.querySelectorAll(".clock"),
+                    function(e){
+                        return (e.classList.contains(lang))
+                    },
+                    'visible'
+                )
+
+		document.getElementById('curl1').innerText = `curl https://winged.ninja/clock-${lang}.txt`
+		document.getElementById('curl2').innerText = `curl https://winged.ninja/clock-${lang}-n.txt`
+
+                const date = new Date()
+                setTimeout(tiem, 1000*(60.5-date.getSeconds()))
+
+                // minutes: get nearest 5-minute mark
+                var mins = Math.round((date.getMinutes()) / 5 ) * 5
+
+                var precision='about'
+                if (mins == date.getMinutes()) {
+                    precision = 'exactly'
+                }
+                var mins = Math.round((date.getMinutes()) / 5 ) * 5
+
+                if (mins < 10) { mins = "0" + mins }
+                var hours = date.getHours()
+                // if we're saying 30, we say "x TO next-hour"
+                if (mins >= 25) { hours++ }
+                hours = hours % 24
+                if (hours < 10) { hours = "0" + hours }
+
+                hours = "h" + hours
+                mins  = "m" + mins
+                //console.log(hours, mins)
+
+                toggleclass(
+                    document.querySelectorAll("span"),
+                    function(e){
+                        return (e.classList.contains(hours) ||e.classList.contains(mins) || e.classList.contains(precision))
+                    },
+                    'active'
+                )
+            }
+            function toggleclass(elems, callback, classname) {
+                elems.forEach(e => {
+                    if (callback(e)) {
+                        e.classList.add(classname)
+                    }
+                    else{
+                        e.classList.remove(classname)
+                    }
+                })
+
+            }
+            function resize() {
+                const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+                const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+                var fs = Math.sqrt(vw * vh) / 12
+                document.querySelector('#fontsize').innerText = ".clock {font-size: " +fs+ "px;}"
+            }
+            window.onresize=resize
+        </script>
+    </head>
+    <body>
+        <div class="clock en">
+        <span class="preamble">It is</span>
+        <span class="exactly">exactly</span>
+        <span class="about">about</span>
+        <span class='m55 m05 m25 m35'>five</span>
+        <span class='m50 m10'>ten</span>
+        <span class='m45 m15'>a quarter</span>
+        <span class='m40 m20'>twenty</span>
+        <span class='m40 m45 m50 m55 m25'>to</span>
+        <span class='m35 m05 m10 m15 m20'>past</span>
+        <span class='m30 m25 m35'>half</span>
+        <span class='h13 h01'>one</span>
+        <span class='h14 h02'>two</span>
+        <span class='h15 h03'>three</span>
+        <span class='h16 h04'>four</span>
+        <span class='h17 h05'>five</span>
+        <span class='h18 h06'>six</span>
+        <span class='h19 h07'>seven</span>
+        <span class='h20 h08'>eight</span>
+        <span class='h21 h09'>nine</span>
+        <span class='h22 h10'>ten</span>
+        <span class='h23 h11'>eleven</span>
+        <span class='h00 h12'>twelve</span>
+        <span class="m00">o' clock</span>
+        <span class='h12 h21 h22 h23 h00 h01 h02 h03'>at</span>
+        <span class='h13 h14 h15 h16 h17 h18 h19 h20 h04 h05 h06 h07 h08 h09 h10 h11'>in the</span>
+        <span class='h21 h22 h23 h00 h01 h02 h03' >night</span>
+        <span class='h04 h05 h06 h07 h08 h09 h10 h11'>morning</span>
+        <span class='h12'>noon</span>
+        <span class='h13 h14 h15 h16 h17'>afternoon</span>
+        <span class='h18 h19 h20'>evening</span>
+        </div>
+
+        <div class="clock ch">
+        <span class="preamble">Es isch</span>
+        <span class="exactly">genau</span>
+        <span class="about">öppe</span>
+        <span class='m55 m05 m25 m35'>füf</span>
+        <span class='m50 m10'>zää</span>
+        <span class='m45 m15'>viertu</span>
+        <span class='m40 m20'>zwänzg</span>
+        <span class='m40 m45 m50 m55 m25'>vor</span>
+        <span class='m35 m05 m10 m15 m20'>ab</span>
+        <span class='m30 m25 m35'>haubi</span>
+        <span class='h13 h01'>eis</span>
+        <span class='h14 h02'>zwöi</span>
+        <span class='h15 h03'>drüü</span>
+        <span class='h16 h04'>vieri</span>
+        <span class='h17 h05'>füfi</span>
+        <span class='h18 h06'>sächsi</span>
+        <span class='h19 h07'>sibni</span>
+        <span class='h20 h08'>achti</span>
+        <span class='h21 h09'>nüni</span>
+        <span class='h22 h10'>zähni</span>
+        <span class='h23 h11'>eufi</span>
+        <span class='h00 h12'>zwöufi</span>
+        <span class='h05 h06 h07 h08 h09 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 h20 h21 h22'>am</span>
+        <span class='h23 h00 h01 h02 h03 h04'>ir</span>
+        <span class='h21 h22 h23 h00 h01 h02 h03' >nacht</span>
+        <span class='h04 h05 h06 h07 h08 h09 h10 h11'>morge</span>
+        <span class='h12'>mittag</span>
+        <span class='h13 h14 h15 h16 h17'>nami</span>
+        <span class='h18 h19 h20'>aabe</span>
+        </div>
+	<div class="codeblock">
+	<code id="curl1"></code>
+	<code id="curl2"></code>
+        </div>
+        <div class="buttoncontainer">
+        <button class="en" onclick='window.location.hash="#en";tiem()'>	&#127468;&#127463;</button>
+        <button class="en" onclick='window.location.hash="#ch";tiem()'>&#127464;&#127469;</button>
+        </div>
+    </body>
+    <script type="text/javascript">resize();tiem()</script>
+    <!-- Curious? Look at https://winged.ninja/tiem.py for the terminal source -->
+</html>
