@@ -3,7 +3,7 @@ import random
 import sys
 from datetime import datetime
 
-from termcolor import colored 
+from termcolor import colored
 
 TIMES = {
     "en": [
@@ -127,23 +127,27 @@ def showtime():
     actives = set([str_hours, str_minutes, "preamble", precision])
 
     on_choices = [
-        lambda s: colored(s, 'yellow', attrs=['bold']),
-        lambda s: colored(s, 'cyan', attrs=['bold']),
-        lambda s: colored(s, 'white', attrs=['bold']),
-        lambda s: colored(s, 'green', attrs=['bold']),
-            
+        lambda s: colored(s, "yellow", attrs=["bold"]),
+        lambda s: colored(s, "cyan", attrs=["bold"]),
+        lambda s: colored(s, "white", attrs=["bold"]),
+        lambda s: colored(s, "green", attrs=["bold"]),
     ]
 
-    off_color = lambda s: '' if 'nofill' in sys.argv else colored(s, 'blue', attrs=['dark']) 
+    off_color = (
+        lambda s: "" if "nofill" in sys.argv else colored(s, "blue", attrs=["dark"])
+    )
 
-    newl = "" if 'nofill' in sys.argv else "\n"
+    newl = "" if "nofill" in sys.argv else "\n"
+    if "nocolor" in sys.argv:
+        # only makes sense in 'nofill' mode, but don't care too much
+        on_choices = [lambda x: x]
 
     written = 0
     for activation, string in TIMES[lang]:
         is_active = set(activation).intersection(actives)
         color = random.choice(on_choices) if is_active else off_color
 
-        sys.stdout.write(color(string+" "))
+        sys.stdout.write(color(string + " "))
         written += len(string)
         if written > 25:
             sys.stdout.write(newl)
