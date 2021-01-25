@@ -9,8 +9,15 @@
 ## Commandline version
 
 ```bash
+# fetch online
 curl https://winged.ninja/clock-en.txt   # multiline
 curl https://winged.ninja/clock-en-n.txt # inactive words hidden, one line
+
+# run locally
+python3 tiem.py  # normal version, english
+python3 tiem.py ch # normal version, swiss german
+python3 tiem.py nofill # don't show inactive filler words
+python3 tiem.py nofill nocolor # only show time string, no coloring, no inactive words
 ```
 
 ## Contributions
