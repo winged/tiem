@@ -14,9 +14,10 @@ TIMES = {
         (["m50", "m10"], "ten"),
         (["m45", "m15"], "a quarter"),
         (["m40", "m20"], "twenty"),
-        (["m40", "m45", "m50", "m55", "m25"], "to"),
-        (["m35", "m05", "m10", "m15", "m20"], "past"),
-        (["m30", "m25", "m35"], "half"),
+        (["m35", "m25"], "twenty-five"),
+        (["m30"], "half"),
+        (["m35", "m40", "m45", "m50", "m55"], "to"),
+        (["m05", "m10", "m15", "m20", "m25", "m30"], "past"),
         (["h13", "h01"], "one"),
         (["h14", "h02"], "two"),
         (["h15", "h03"], "three"),
@@ -115,14 +116,15 @@ TIMES = {
 
 def showtime():
 
+    langs = [lang for lang in TIMES if lang in sys.argv[1:]]
+    lang = langs[0] if langs else "en"
     date = datetime.now()
     minutes = round(date.minute / 5) * 5
     precision = "exactly" if date.minute == minutes else "about"
     str_minutes = f"m{minutes:02}"
-    hours = (date.hour if minutes < 25 else date.hour + 1) % 24
+    fallover_to = 25 if lang == "ch" else 35
+    hours = (date.hour if minutes < fallover_to else date.hour + 1) % 24
     str_hours = f"h{hours:02}"
-    langs = [lang for lang in TIMES if lang in sys.argv[1:]]
-    lang = langs[0] if langs else "en"
 
     actives = set([str_hours, str_minutes, "preamble", precision])
 
